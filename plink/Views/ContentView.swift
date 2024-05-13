@@ -38,7 +38,7 @@ struct ContentView: View {
                 .scaleEffect(0.9)
                 .padding(5)
                 .overlay(RoundedRectangle(cornerRadius: 30).strokeBorder(.white, lineWidth: 6))
-                .offset(y:-60)
+                //.offset(y:-60)
                 Spacer()
                 VStack (spacing: 26) {
                     NavigationLink {
@@ -78,7 +78,7 @@ struct ContentView: View {
                     .offset(x: -350,y: 0)
             )
         }
-        .navigationBarBackButtonHidden(true)
+        .navigationBarHidden(true)
         .navigationViewStyle(StackNavigationViewStyle())
     }
     

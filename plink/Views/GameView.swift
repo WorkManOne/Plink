@@ -246,7 +246,7 @@ struct GameView: View {
                     
                     Spacer()
                 }
-            }.navigationBarBackButtonHidden(true)
+            }.navigationBarHidden(true)
             .background(CustomBackground())
             
     }

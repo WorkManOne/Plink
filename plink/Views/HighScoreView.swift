@@ -85,7 +85,7 @@ struct HighScoreView: View {
                 }
             }.padding(.horizontal, 20)
         }
-        .navigationBarBackButtonHidden(true)
+        .navigationBarHidden(true)
         .background(CustomBackground())
     }
         

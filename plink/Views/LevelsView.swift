@@ -54,7 +54,7 @@ struct LevelsView: View {
                 }
             }.padding()
 
-            LazyVGrid(columns: [GridItem(),GridItem(),GridItem()], content: {
+            LazyVGrid(columns: [GridItem(.adaptive(minimum: 100))], content: {
                 ForEach (model.levels, id: \.number) { level in
                     if (level.isOpened) {
                         NavigationLink {
@@ -68,7 +68,7 @@ struct LevelsView: View {
                                 Image("ball")
                                     .resizable()
                                     .aspectRatio(contentMode: .fit)
-                                    .scaleEffect(0.85)
+                                    .frame(maxHeight: 80)
                             }
                         }
                     }
@@ -78,11 +78,10 @@ struct LevelsView: View {
                                 Image("block")
                                     .resizable()
                                     .aspectRatio(contentMode: .fit)
-                                
                                 Image("lock")
                                     .resizable()
                                     .aspectRatio(contentMode: .fit)
-                                    .scaleEffect(0.5)
+                                    .frame(maxHeight: 70)
                             }
                         })
                     }
@@ -90,7 +89,6 @@ struct LevelsView: View {
                     
                 }
             }).padding(20)
-                .navigationBarBackButtonHidden(true)
             Spacer()
             NavigationLink {
                 HighScoreView(model: model)
@@ -105,7 +103,7 @@ struct LevelsView: View {
                     .clipShape(RoundedRectangle(cornerRadius: 24))
                     .overlay(RoundedRectangle(cornerRadius: 24).strokeBorder(Color("borderButton"), lineWidth: 4))
             }
-        }
+        }.navigationBarHidden(true)
         .alert(isPresented: $showWarningLocked, content: {
             Alert(title: Text("Заблокировано"), message: Text("Пройдите предыдущие уровни"), dismissButton: .default(Text("ОК")))
         })

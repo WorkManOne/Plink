@@ -47,7 +47,7 @@ struct SettingsView: View {
                     .foregroundColor(.white)
             }.padding(.horizontal, 20)
         }
-        .navigationBarBackButtonHidden(true)
+        .navigationBarHidden(true)
         .background(
             ScrollView {
                 VStack {
