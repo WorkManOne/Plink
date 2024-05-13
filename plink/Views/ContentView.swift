@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-
 struct ContentView: View {
     @ObservedObject var model = ViewModel()
     var body: some View {
@@ -70,7 +69,13 @@ struct ContentView: View {
                 }
                 Spacer()
                 
-            }.background(
+            }
+            .onAppear() {
+                if model.vibrationSetting {
+                    UIImpactFeedbackGenerator(style: .light).impactOccurred()
+                }
+            }
+            .background(
                 Image("bg")
                     .resizable()
                     .scaledToFill()

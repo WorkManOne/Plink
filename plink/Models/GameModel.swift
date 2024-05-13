@@ -82,7 +82,7 @@ class GameModel : ObservableObject {
         }
         if !(newPosition.0 < 0 || newPosition.0 > size-1 || newPosition.1 < 0 || newPosition.1 > size-1) {
             if self.field[newPosition.0][newPosition.1].name == "0" {
-                //print("\(field[position.0][position.1]) -> \(field[newPosition.0][newPosition.1]):\(position) -> \(newPosition)")
+                print("\(field[position.0][position.1]) -> \(field[newPosition.0][newPosition.1]):\(position) -> \(newPosition)")
 
                 let temp = field[position.0][position.1]
                 field[position.0][position.1] = field[newPosition.0][newPosition.1]

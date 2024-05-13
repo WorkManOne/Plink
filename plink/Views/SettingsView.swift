@@ -49,23 +49,13 @@ struct SettingsView: View {
         }
         .navigationBarHidden(true)
         .background(
-            ScrollView {
-                VStack {
-                    Circle()
-                        .foregroundColor(.blue)
-                        .blur(radius: 130)
-                        .offset(x:-150)
-                    Circle()
-                        .foregroundColor(.purple)
-                        .blur(radius: 130)
-                        .offset(x:150)
-                }
-            }.background(
-                Color("bgColor")
-                    .frame(maxHeight: .infinity)
-                    .ignoresSafeArea(.all)
-            )
+            CustomBackground()
         )
+        .onAppear() {
+            if model.vibrationSetting {
+                UIImpactFeedbackGenerator(style: .light).impactOccurred()
+            }
+        }
     }
         
 }

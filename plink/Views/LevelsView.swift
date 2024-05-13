@@ -58,7 +58,7 @@ struct LevelsView: View {
                 ForEach (model.levels, id: \.number) { level in
                     if (level.isOpened) {
                         NavigationLink {
-                            GameView(model: model, currLevel: level.number)
+                            GameView(currLevel: level.number, model: model)
                         } label: {
                             ZStack {
                                 Image("block")
@@ -103,7 +103,8 @@ struct LevelsView: View {
                     .clipShape(RoundedRectangle(cornerRadius: 24))
                     .overlay(RoundedRectangle(cornerRadius: 24).strokeBorder(Color("borderButton"), lineWidth: 4))
             }
-        }.navigationBarHidden(true)
+        }
+        .navigationBarHidden(true)
         .alert(isPresented: $showWarningLocked, content: {
             Alert(title: Text("Заблокировано"), message: Text("Пройдите предыдущие уровни"), dismissButton: .default(Text("ОК")))
         })
@@ -114,6 +115,11 @@ struct LevelsView: View {
                 .ignoresSafeArea()
                 .offset(x: -742,y: 0)
         )
+        .onAppear() {
+            if model.vibrationSetting {
+                UIImpactFeedbackGenerator(style: .light).impactOccurred()
+            }
+        }
     }
 }
 

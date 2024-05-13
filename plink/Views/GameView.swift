@@ -6,11 +6,14 @@
 //
 
 import SwiftUI
+import AudioToolbox
 
 struct GameView: View {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
-    @ObservedObject var model : ViewModel
     var currLevel : Int = 0
+    let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
+    
+    @ObservedObject var model : ViewModel
     @ObservedObject private var game = GameModel()
     
     @State private var elapsedTime : TimeInterval = 0
@@ -22,7 +25,7 @@ struct GameView: View {
     @State private var isGameCompleted = false
     @State private var completedSteps = 0
     
-    let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
+    
     
     var backButton : some View {
         Button(action: {
@@ -188,25 +191,30 @@ struct GameView: View {
                                         .gesture(DragGesture(minimumDistance: 50, coordinateSpace: .global)
                                             .onEnded({ value in
                                                 var isMoved = false
-                                                if value.translation.width < 0 {
-                                                    //print(game.field[i][j].name, " left")
+                                                let maxShift = max(abs(value.translation.width), abs(value.translation.height))
+                                                if value.translation.width < 0 && maxShift == abs(value.translation.width) {
+                                                    print(game.field[i][j].name, " left")
                                                     isMoved = game.moveTo(direction: .left, position: (i,j))
                                                     
                                                 }
-                                                if value.translation.width > 0 {
-                                                    //print(game.field[i][j].name, " right")
+                                                if value.translation.width > 0 && maxShift == abs(value.translation.width) {
+                                                    print(game.field[i][j].name, " right")
                                                     isMoved = game.moveTo(direction: .right, position: (i,j))
                                                     
                                                 }
-                                                if value.translation.height < 0 {
-                                                    //print(game.field[i][j].name, " up")
+                                                if value.translation.height < 0 && maxShift == abs(value.translation.height) {
+                                                    print(game.field[i][j].name, " up")
                                                     isMoved = game.moveTo(direction: .up, position: (i,j))
                                                     
                                                 }
-                                                if value.translation.height > 0 {
-                                                    //print(game.field[i][j].name, " down")
+                                                if value.translation.height > 0 && maxShift == abs(value.translation.height) {
+                                                    print(game.field[i][j].name, " down")
                                                     isMoved = game.moveTo(direction: .down, position: (i,j))
                                                     
+                                                }
+                                                print(isMoved)
+                                                if isMoved && model.vibrationSetting {
+                                                    UIImpactFeedbackGenerator(style: .light).impactOccurred()
                                                 }
                                                 if (!isTimerRunning && isMoved) {
                                                     //timerString = "00:00"
@@ -246,8 +254,14 @@ struct GameView: View {
                     
                     Spacer()
                 }
-            }.navigationBarHidden(true)
+            }
+            .navigationBarHidden(true)
             .background(CustomBackground())
+            .onAppear() {
+                if model.vibrationSetting {
+                    UIImpactFeedbackGenerator(style: .light).impactOccurred()
+                }
+            }
             
     }
 }
