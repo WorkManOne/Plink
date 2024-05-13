@@ -1,0 +1,124 @@
+//
+//  LevelsView.swift
+//  plink
+//
+//  Created by Кирилл Архипов on 12.05.2024.
+//
+
+import SwiftUI
+
+struct LockedLevelView: View {
+    var body: some View {
+        Text("Пройдите предыдущие уровни")
+    }
+}
+
+struct LevelsView: View {
+    @ObservedObject var model : ViewModel
+    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+    @State private var showWarningLocked = false
+    
+    var backButton : some View {
+        Button(action: {
+            self.presentationMode.wrappedValue.dismiss()
+        }) {
+            Text(Image(systemName: "arrow.left"))
+                .font(.title)
+                .foregroundColor(.white)
+                .shadow(radius: 0, y: 2)
+                .padding(.horizontal, 40)
+                .padding(.vertical, 20)
+                .background(Color("greenButton"))
+                .clipShape(RoundedRectangle(cornerRadius: 24))
+                .overlay(RoundedRectangle(cornerRadius: 24).strokeBorder(Color("borderButton"), lineWidth: 4))
+        }
+    }
+    
+    var body: some View {
+        VStack {
+            HStack {
+                backButton
+                Spacer()
+                NavigationLink {
+                    SettingsView(model: model)
+                } label: {
+                    Text(Image(systemName: "gearshape.fill"))
+                        .font(.title)
+                        .foregroundColor(.white)
+                        .shadow(radius: 0, y: 2)
+                        .padding(.horizontal, 40)
+                        .padding(.vertical, 20)
+                        .background(Color("greenButton"))
+                        .clipShape(RoundedRectangle(cornerRadius: 24))
+                        .overlay(RoundedRectangle(cornerRadius: 24).strokeBorder(Color("borderButton"), lineWidth: 4))
+                }
+            }.padding()
+
+            LazyVGrid(columns: [GridItem(),GridItem(),GridItem()], content: {
+                ForEach (model.levels, id: \.number) { level in
+                    if (level.isOpened) {
+                        NavigationLink {
+                            GameView(model: model, currLevel: level.number)
+                        } label: {
+                            ZStack {
+                                Image("block")
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                
+                                Image("ball")
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                    .scaleEffect(0.85)
+                            }
+                        }
+                    }
+                    else {
+                        Button(action: {showWarningLocked.toggle()}, label: {
+                            ZStack {
+                                Image("block")
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                
+                                Image("lock")
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                    .scaleEffect(0.5)
+                            }
+                        })
+                    }
+                    
+                    
+                }
+            }).padding(20)
+                .navigationBarBackButtonHidden(true)
+            Spacer()
+            NavigationLink {
+                HighScoreView(model: model)
+            } label: {
+                Text("HIGH SCORE")
+                    .font(.title)
+                    .foregroundColor(.white)
+                    .shadow(radius: 0, y: 2)
+                    .padding(.horizontal, 40)
+                    .padding(.vertical, 20)
+                    .background(Color("greenButton"))
+                    .clipShape(RoundedRectangle(cornerRadius: 24))
+                    .overlay(RoundedRectangle(cornerRadius: 24).strokeBorder(Color("borderButton"), lineWidth: 4))
+            }
+        }
+        .alert(isPresented: $showWarningLocked, content: {
+            Alert(title: Text("Заблокировано"), message: Text("Пройдите предыдущие уровни"), dismissButton: .default(Text("ОК")))
+        })
+        .background(
+            Image("bg")
+                .resizable()
+                .scaledToFill()
+                .ignoresSafeArea()
+                .offset(x: -742,y: 0)
+        )
+    }
+}
+
+#Preview {
+    LevelsView(model: ViewModel())
+}
