@@ -30,6 +30,34 @@ struct CustomBackground: View {
     }
 }
 
+struct greenButton : ViewModifier {
+    func body(content: Content) -> some View {
+        content
+            .font(.title)
+            .foregroundColor(.white)
+            .shadow(radius: 0, y: 2)
+            .padding(.horizontal, 40)
+            .padding(.vertical, 20)
+            .background(Color("greenButton"))
+            .clipShape(RoundedRectangle(cornerRadius: 24))
+            .overlay(RoundedRectangle(cornerRadius: 24).strokeBorder(Color("borderButton"), lineWidth: 4))
+    }
+}
+
+struct redButton : ViewModifier {
+    func body(content: Content) -> some View {
+        content
+            .font(.title)
+            .foregroundColor(.white)
+            .shadow(radius: 0, y: 2)
+            .padding(.horizontal, 40)
+            .padding(.vertical, 20)
+            .background(Color("redButton"))
+            .clipShape(RoundedRectangle(cornerRadius: 24))
+            .overlay(RoundedRectangle(cornerRadius: 24).strokeBorder(Color("borderButton"), lineWidth: 4))
+    }
+}
+
 struct ColoredToggleStyle: ToggleStyle {
     var label = ""
     var onColor = Color(UIColor.green)

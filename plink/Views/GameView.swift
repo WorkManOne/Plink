@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import AudioToolbox
 
 struct GameView: View {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
@@ -25,21 +24,12 @@ struct GameView: View {
     @State private var isGameCompleted = false
     @State private var completedSteps = 0
     
-    
-    
     var backButton : some View {
         Button(action: {
             self.presentationMode.wrappedValue.dismiss()
         }) {
             Text(Image(systemName: "arrow.left"))
-                .font(.title)
-                .foregroundColor(.white)
-                .shadow(radius: 0, y: 2)
-                .padding(.horizontal, 40)
-                .padding(.vertical, 20)
-                .background(Color("greenButton"))
-                .clipShape(RoundedRectangle(cornerRadius: 24))
-                .overlay(RoundedRectangle(cornerRadius: 24).strokeBorder(Color("borderButton"), lineWidth: 4))
+                .modifier(greenButton())
         }
     }
     
@@ -48,14 +38,7 @@ struct GameView: View {
             self.presentationMode.wrappedValue.dismiss()
         }) {
             Text("CONTINUE \(Image(systemName: "arrow.right"))")
-                .font(.title)
-                .foregroundColor(.white)
-                .shadow(radius: 0, y: 2)
-                .padding(.horizontal, 40)
-                .padding(.vertical, 20)
-                .background(Color("redButton"))
-                .clipShape(RoundedRectangle(cornerRadius: 24))
-                .overlay(RoundedRectangle(cornerRadius: 24).strokeBorder(Color("borderButton"), lineWidth: 4))
+                .modifier(redButton())
         }
     }
     
@@ -111,14 +94,7 @@ struct GameView: View {
                         ContentView(model: model)
                     } label: {
                         Text("MAIN MENU")
-                            .font(.title)
-                            .foregroundColor(.white)
-                            .shadow(radius: 0, y: 2)
-                            .padding(.horizontal, 40)
-                            .padding(.vertical, 20)
-                            .background(Color("greenButton"))
-                            .clipShape(RoundedRectangle(cornerRadius: 24))
-                            .overlay(RoundedRectangle(cornerRadius: 24).strokeBorder(Color("borderButton"), lineWidth: 4))
+                            .modifier(greenButton())
                     }
 
                 }
@@ -130,14 +106,7 @@ struct GameView: View {
                             SettingsView(model: model)
                         } label: {
                             Text(Image(systemName: "gearshape.fill"))
-                                .font(.title)
-                                .foregroundColor(.white)
-                                .shadow(radius: 0, y: 2)
-                                .padding(.horizontal, 40)
-                                .padding(.vertical, 20)
-                                .background(Color("greenButton"))
-                                .clipShape(RoundedRectangle(cornerRadius: 24))
-                                .overlay(RoundedRectangle(cornerRadius: 24).strokeBorder(Color("borderButton"), lineWidth: 4))
+                                .modifier(greenButton())
                         }
                     }.padding()
                     HStack {
@@ -184,35 +153,32 @@ struct GameView: View {
                                             .font(.custom("Rounded Mplus 1c", size: 24))
                                             .shadow(radius: 0, x: 0, y: 2)
                                             .shadow(radius: 8, x: 0, y: 2)
-                                        //.foregroundStyle(.)
                                     }.opacity(game.field[i][j].name == "0" ? 0.0 : 1.0)
-                                    //.rotationEffect(.degrees(isSwiped ? 20 : 0))
-                                    //.offset($isSwiped ? 20 : 0)
                                         .gesture(DragGesture(minimumDistance: 50, coordinateSpace: .global)
                                             .onEnded({ value in
                                                 var isMoved = false
                                                 let maxShift = max(abs(value.translation.width), abs(value.translation.height))
                                                 if value.translation.width < 0 && maxShift == abs(value.translation.width) {
-                                                    print(game.field[i][j].name, " left")
+                                                    //print(game.field[i][j].name, " left")
                                                     isMoved = game.moveTo(direction: .left, position: (i,j))
                                                     
                                                 }
                                                 if value.translation.width > 0 && maxShift == abs(value.translation.width) {
-                                                    print(game.field[i][j].name, " right")
+                                                    //print(game.field[i][j].name, " right")
                                                     isMoved = game.moveTo(direction: .right, position: (i,j))
                                                     
                                                 }
                                                 if value.translation.height < 0 && maxShift == abs(value.translation.height) {
-                                                    print(game.field[i][j].name, " up")
+                                                    //print(game.field[i][j].name, " up")
                                                     isMoved = game.moveTo(direction: .up, position: (i,j))
                                                     
                                                 }
                                                 if value.translation.height > 0 && maxShift == abs(value.translation.height) {
-                                                    print(game.field[i][j].name, " down")
+                                                    //print(game.field[i][j].name, " down")
                                                     isMoved = game.moveTo(direction: .down, position: (i,j))
                                                     
                                                 }
-                                                print(isMoved)
+                                                //print(isMoved)
                                                 if isMoved && model.vibrationSetting {
                                                     UIImpactFeedbackGenerator(style: .light).impactOccurred()
                                                 }
@@ -242,14 +208,7 @@ struct GameView: View {
                         game.shuffle()
                     } label: {
                         Text("Random")
-                            .font(.title)
-                            .foregroundColor(.white)
-                            .shadow(radius: 0, y: 2)
-                            .padding(.horizontal, 40)
-                            .padding(.vertical, 20)
-                            .background(Color("redButton"))
-                            .clipShape(RoundedRectangle(cornerRadius: 24))
-                            .overlay(RoundedRectangle(cornerRadius: 24).strokeBorder(Color("borderButton"), lineWidth: 4))
+                            .modifier(redButton())
                     }
                     
                     Spacer()

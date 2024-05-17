@@ -17,14 +17,7 @@ struct HighScoreView: View {
             self.presentationMode.wrappedValue.dismiss()
         }) {
             Text(Image(systemName: "arrow.left"))
-                .font(.title)
-                .foregroundColor(.white)
-                .shadow(radius: 0, y: 2)
-                .padding(.horizontal, 40)
-                .padding(.vertical, 20)
-                .background(Color("greenButton"))
-                .clipShape(RoundedRectangle(cornerRadius: 24))
-                .overlay(RoundedRectangle(cornerRadius: 24).strokeBorder(Color("borderButton"), lineWidth: 4))
+                .modifier(greenButton())
         }
     }
     
@@ -37,14 +30,7 @@ struct HighScoreView: View {
                     SettingsView(model: model)
                 } label: {
                     Text(Image(systemName: "gearshape.fill"))
-                        .font(.title)
-                        .foregroundColor(.white)
-                        .shadow(radius: 0, y: 2)
-                        .padding(.horizontal, 40)
-                        .padding(.vertical, 20)
-                        .background(Color("greenButton"))
-                        .clipShape(RoundedRectangle(cornerRadius: 24))
-                        .overlay(RoundedRectangle(cornerRadius: 24).strokeBorder(Color("borderButton"), lineWidth: 4))
+                        .modifier(greenButton())
                 }
             }.padding()
             HStack {
@@ -60,9 +46,9 @@ struct HighScoreView: View {
                         Text("\(offset+1)")
                             .foregroundColor(.white)
                         Spacer()
-                        Text(item.name)
-                            .foregroundColor(.white)
-                        Spacer()
+//                        Text(item.name)
+//                            .foregroundColor(.white)
+//                        Spacer()
                         Image("Alarm")
                             .renderingMode(.template)
                             .resizable()

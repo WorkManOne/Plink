@@ -23,14 +23,7 @@ struct LevelsView: View {
             self.presentationMode.wrappedValue.dismiss()
         }) {
             Text(Image(systemName: "arrow.left"))
-                .font(.title)
-                .foregroundColor(.white)
-                .shadow(radius: 0, y: 2)
-                .padding(.horizontal, 40)
-                .padding(.vertical, 20)
-                .background(Color("greenButton"))
-                .clipShape(RoundedRectangle(cornerRadius: 24))
-                .overlay(RoundedRectangle(cornerRadius: 24).strokeBorder(Color("borderButton"), lineWidth: 4))
+                .modifier(greenButton())
         }
     }
     
@@ -43,14 +36,7 @@ struct LevelsView: View {
                     SettingsView(model: model)
                 } label: {
                     Text(Image(systemName: "gearshape.fill"))
-                        .font(.title)
-                        .foregroundColor(.white)
-                        .shadow(radius: 0, y: 2)
-                        .padding(.horizontal, 40)
-                        .padding(.vertical, 20)
-                        .background(Color("greenButton"))
-                        .clipShape(RoundedRectangle(cornerRadius: 24))
-                        .overlay(RoundedRectangle(cornerRadius: 24).strokeBorder(Color("borderButton"), lineWidth: 4))
+                        .modifier(greenButton())
                 }
             }.padding()
 
@@ -94,15 +80,9 @@ struct LevelsView: View {
                 HighScoreView(model: model)
             } label: {
                 Text("HIGH SCORE")
-                    .font(.title)
-                    .foregroundColor(.white)
-                    .shadow(radius: 0, y: 2)
-                    .padding(.horizontal, 40)
-                    .padding(.vertical, 20)
-                    .background(Color("greenButton"))
-                    .clipShape(RoundedRectangle(cornerRadius: 24))
-                    .overlay(RoundedRectangle(cornerRadius: 24).strokeBorder(Color("borderButton"), lineWidth: 4))
+                    .modifier(greenButton())
             }
+            .padding()
         }
         .navigationBarHidden(true)
         .alert(isPresented: $showWarningLocked, content: {
