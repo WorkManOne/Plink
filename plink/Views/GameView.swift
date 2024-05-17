@@ -210,7 +210,9 @@ struct GameView: View {
                         }
                     }.padding()
                     Button {
+                        UIImpactFeedbackGenerator(style: .light).impactOccurred()
                         game.shuffle()
+                        
                     } label: {
                         Text("Random")
                             .modifier(redButton())
@@ -225,6 +227,9 @@ struct GameView: View {
                 isTimerRunning = false
             }
             .onAppear {
+                if model.vibrationSetting {
+                    UIImpactFeedbackGenerator(style: .light).impactOccurred()
+                }
                 if !isTimerRunning && isFirstMove {
                         startTime = Date() - elapsedTime
                         isTimerRunning = true
@@ -232,11 +237,6 @@ struct GameView: View {
             }
         }
             .navigationBarHidden(true)
-            .onAppear {
-                if model.vibrationSetting {
-                    UIImpactFeedbackGenerator(style: .light).impactOccurred()
-                }
-            }
     }
 }
 

@@ -92,17 +92,18 @@ struct LevelsView: View {
                     .ignoresSafeArea()
                     .offset(x: -742,y: 0)
             )
+            .onAppear() {
+                if model.vibrationSetting {
+                    UIImpactFeedbackGenerator(style: .light).impactOccurred()
+                }
+            }
         }
         .navigationBarHidden(true)
         .alert(isPresented: $showWarningLocked, content: {
             Alert(title: Text("Заблокировано"), message: Text("Пройдите предыдущие уровни"), dismissButton: .default(Text("ОК")))
         })
         
-        .onAppear() {
-            if model.vibrationSetting {
-                UIImpactFeedbackGenerator(style: .light).impactOccurred()
-            }
-        }
+        
     }
 }
 

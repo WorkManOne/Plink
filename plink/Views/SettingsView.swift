@@ -24,46 +24,49 @@ struct SettingsView: View {
     }
     
     var body: some View {
-        VStack {
-            HStack {
-                backButton
+        NavigationView {
+            VStack {
+                HStack {
+                    backButton
+                    Spacer()
+                }.padding()
+                HStack {
+                    Spacer()
+                    Text("SETTINGS")
+                        .foregroundColor(.white)
+                        .font(.title)
+                    Spacer()
+                }.padding(.vertical, 50)
+                ScrollView {
+                    Toggle("VIBRATION", isOn: $model.vibrationSetting)
+                        .toggleStyle(ColoredToggleStyle(label: "VIBRATION", onColor: Color.greenButton, offColor: Color.gray,thumbColorOff: Color.white, thumbColorOn: Color.purple))
+                        .foregroundColor(.white)
+                    
+                }.padding(.horizontal, 20)
                 Spacer()
-            }.padding()
-            HStack {
-                Spacer()
-                Text("SETTINGS")
-                    .foregroundColor(.white)
-                    .font(.title)
-                Spacer()
-            }.padding(.vertical, 50)
-            ScrollView {
-                Toggle("VIBRATION", isOn: $model.vibrationSetting)
-                    .toggleStyle(ColoredToggleStyle(label: "VIBRATION", onColor: Color.greenButton, offColor: Color.gray,thumbColorOff: Color.white, thumbColorOn: Color.purple))
-                    .foregroundColor(.white)
-                
-            }.padding(.horizontal, 20)
-            Spacer()
-            Button(action: {isResetAlert = true}, label: {
-                Text("RESET PROGRESS")
-                    .modifier(greenButton())
-                    .padding()
-            })
-            .alert(isPresented: $isResetAlert, content: {
-                                Alert(title: Text("Are you sure?"), message: Text("All your completed levels will be locked!"), primaryButton: .cancel(), secondaryButton: .default(Text("Reset"), action: {
-                                    model.resetProgress()
-                                    isResetAlert = false
-                                }))
-            })
-        }
-        .navigationBarHidden(true)
-        .background(
-            CustomBackground()
-        )
-        .onAppear() {
-            if model.vibrationSetting {
-                UIImpactFeedbackGenerator(style: .light).impactOccurred()
+                Button(action: {isResetAlert = true}, label: {
+                    Text("RESET PROGRESS")
+                        .modifier(greenButton())
+                        .padding()
+                })
+                .alert(isPresented: $isResetAlert, content: {
+                    Alert(title: Text("Are you sure?"), message: Text("All your completed levels will be locked!"), primaryButton: .cancel(), secondaryButton: .default(Text("Reset"), action: {
+                        model.resetProgress()
+                        isResetAlert = false
+                    }))
+                })
+            }
+            .background(
+                CustomBackground()
+            )
+            .onAppear() {
+                if model.vibrationSetting {
+                    UIImpactFeedbackGenerator(style: .light).impactOccurred()
+                }
             }
         }
+        .navigationBarHidden(true)
+        
     }
         
 }

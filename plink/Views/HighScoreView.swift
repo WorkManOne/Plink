@@ -70,13 +70,14 @@ struct HighScoreView: View {
                 }.padding(.horizontal, 20)
             }
             .background(CustomBackground())
-        }
-        .navigationBarHidden(true)
-        .onAppear() {
-            if model.vibrationSetting {
-                UIImpactFeedbackGenerator(style: .light).impactOccurred()
+            .onAppear() {
+                if model.vibrationSetting {
+                    UIImpactFeedbackGenerator(style: .light).impactOccurred()
+                }
             }
         }
+        .navigationBarHidden(true)
+        
     }
         
 }
