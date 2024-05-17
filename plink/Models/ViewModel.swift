@@ -103,7 +103,7 @@ class ViewModel : ObservableObject {
         if let _ = levels.first {
             levels[0].isOpened = true
         }
-        topRecords.removeAll()
+        topRecords = [Record(),Record(),Record(),Record(),Record(),Record(),Record(),Record(),Record(),Record()]
         currLevel = 0
     }
     func addNewRec(rec: Record) {
