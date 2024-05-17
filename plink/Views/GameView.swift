@@ -23,6 +23,7 @@ struct GameView: View {
     @State private var isNewRecord = false
     @State private var isGameCompleted = false
     @State private var completedSteps = 0
+    @State private var isFirstMove = false
     
     var backButton : some View {
         Button(action: {
@@ -43,6 +44,7 @@ struct GameView: View {
     }
     
     var body: some View {
+        NavigationView {
             VStack {
                 if (isGameCompleted) {
                     Spacer()
@@ -96,7 +98,7 @@ struct GameView: View {
                         Text("MAIN MENU")
                             .modifier(greenButton())
                     }
-
+                    
                 }
                 else {
                     HStack {
@@ -179,11 +181,13 @@ struct GameView: View {
                                                     
                                                 }
                                                 //print(isMoved)
+                                                if isMoved && !isFirstMove {
+                                                    isFirstMove = true
+                                                }
                                                 if isMoved && model.vibrationSetting {
                                                     UIImpactFeedbackGenerator(style: .light).impactOccurred()
                                                 }
                                                 if (!isTimerRunning && isMoved) {
-                                                    //timerString = "00:00"
                                                     startTime = Date()
                                                     isTimerRunning = true
                                                 }
@@ -195,6 +199,7 @@ struct GameView: View {
                                                     }
                                                     completedSteps = game.steps
                                                     model.unlockNext(prev: currLevel)
+                                                    model.addNewRec(rec: Record(steps: game.steps, time: elapsedTime))
                                                     isTimerRunning = false
                                                     isGameCompleted = true
                                                 }
@@ -214,14 +219,24 @@ struct GameView: View {
                     Spacer()
                 }
             }
-            .navigationBarHidden(true)
             .background(CustomBackground())
-            .onAppear() {
+            .onDisappear {
+                //print("dissaperad")
+                isTimerRunning = false
+            }
+            .onAppear {
+                if !isTimerRunning && isFirstMove {
+                        startTime = Date() - elapsedTime
+                        isTimerRunning = true
+                }
+            }
+        }
+            .navigationBarHidden(true)
+            .onAppear {
                 if model.vibrationSetting {
                     UIImpactFeedbackGenerator(style: .light).impactOccurred()
                 }
             }
-            
     }
 }
 

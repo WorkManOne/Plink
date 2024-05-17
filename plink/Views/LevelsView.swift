@@ -28,73 +28,76 @@ struct LevelsView: View {
     }
     
     var body: some View {
-        VStack {
-            HStack {
-                backButton
-                Spacer()
-                NavigationLink {
-                    SettingsView(model: model)
-                } label: {
-                    Text(Image(systemName: "gearshape.fill"))
-                        .modifier(greenButton())
-                }
-            }.padding()
-
-            LazyVGrid(columns: [GridItem(.adaptive(minimum: 100))], content: {
-                ForEach (model.levels, id: \.number) { level in
-                    if (level.isOpened) {
-                        NavigationLink {
-                            GameView(currLevel: level.number, model: model)
-                        } label: {
-                            ZStack {
-                                Image("block")
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fit)
-                                
-                                Image("ball")
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fit)
-                                    .frame(maxHeight: 80)
+        NavigationView {
+            VStack {
+                HStack {
+                    backButton
+                    Spacer()
+                    NavigationLink {
+                        SettingsView(model: model)
+                    } label: {
+                        Text(Image(systemName: "gearshape.fill"))
+                            .modifier(greenButton())
+                    }
+                }.padding()
+                
+                LazyVGrid(columns: [GridItem(.adaptive(minimum: 100))], content: {
+                    ForEach (model.levels, id: \.number) { level in
+                        if (level.isOpened) {
+                            NavigationLink {
+                                GameView(currLevel: level.number, model: model)
+                            } label: {
+                                ZStack {
+                                    Image("block")
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fit)
+                                    
+                                    Image("ball")
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fit)
+                                        .frame(maxHeight: 80)
+                                }
                             }
                         }
+                        else {
+                            Button(action: {showWarningLocked.toggle()}, label: {
+                                ZStack {
+                                    Image("block")
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fit)
+                                    Image("lock")
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fit)
+                                        .frame(maxHeight: 70)
+                                }
+                            })
+                        }
+                        
+                        
                     }
-                    else {
-                        Button(action: {showWarningLocked.toggle()}, label: {
-                            ZStack {
-                                Image("block")
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fit)
-                                Image("lock")
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fit)
-                                    .frame(maxHeight: 70)
-                            }
-                        })
-                    }
-                    
-                    
+                }).padding(20)
+                Spacer()
+                NavigationLink {
+                    HighScoreView(model: model)
+                } label: {
+                    Text("HIGH SCORE")
+                        .modifier(greenButton())
                 }
-            }).padding(20)
-            Spacer()
-            NavigationLink {
-                HighScoreView(model: model)
-            } label: {
-                Text("HIGH SCORE")
-                    .modifier(greenButton())
+                .padding()
             }
-            .padding()
+            .background(
+                Image("bg")
+                    .resizable()
+                    .scaledToFill()
+                    .ignoresSafeArea()
+                    .offset(x: -742,y: 0)
+            )
         }
         .navigationBarHidden(true)
         .alert(isPresented: $showWarningLocked, content: {
             Alert(title: Text("Заблокировано"), message: Text("Пройдите предыдущие уровни"), dismissButton: .default(Text("ОК")))
         })
-        .background(
-            Image("bg")
-                .resizable()
-                .scaledToFill()
-                .ignoresSafeArea()
-                .offset(x: -742,y: 0)
-        )
+        
         .onAppear() {
             if model.vibrationSetting {
                 UIImpactFeedbackGenerator(style: .light).impactOccurred()
@@ -104,5 +107,6 @@ struct LevelsView: View {
 }
 
 #Preview {
-    LevelsView(model: ViewModel())
+    //LevelsView(model: ViewModel())
+    ContentView()
 }

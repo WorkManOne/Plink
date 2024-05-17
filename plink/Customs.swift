@@ -9,9 +9,9 @@ import SwiftUI
 
 struct CustomBackground: View {
     var body : some View {
-        ScrollView (showsIndicators: false){
+        //ScrollView (showsIndicators: false){
             VStack {
-                //HStack {Spacer()}
+                HStack {Spacer()}
                 Circle()
                     .foregroundColor(.blue)
                     .blur(radius: 130)
@@ -21,7 +21,7 @@ struct CustomBackground: View {
                     .blur(radius: 130)
                     .offset(x:150)
             }
-        }
+        //}
         .background(
             Color("bgColor")
                 .frame(maxHeight: .infinity)

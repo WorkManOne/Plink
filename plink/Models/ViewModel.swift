@@ -7,11 +7,11 @@
 
 import Foundation
 
-struct Player : Codable {
-    var name : String
+struct Record : Codable {
+    //var name : String
     //var lvl : String
-    var steps : Int
-    var time : TimeInterval
+    var steps : Int = Int.max
+    var time : TimeInterval = TimeInterval(Int.max)
 }
 
 struct Level : Codable {
@@ -23,10 +23,10 @@ struct Level : Codable {
 }
 
 class ViewModel : ObservableObject {
-    @Published var topPlayers : [Player]{
+    @Published var topRecords : [Record]{
         didSet {
-            if let encoded = try? JSONEncoder().encode(topPlayers) {
-                UserDefaults.standard.set(encoded, forKey: "topPlayers")
+            if let encoded = try? JSONEncoder().encode(topRecords) {
+                UserDefaults.standard.set(encoded, forKey: "topRecords")
             }
         }
     }
@@ -52,11 +52,11 @@ class ViewModel : ObservableObject {
         }
     }
     init() {
-        if let data = UserDefaults.standard.data(forKey: "topPlayers"),
-           let decoded = try? JSONDecoder().decode([Player].self, from: data) {
-            self.topPlayers = decoded
+        if let data = UserDefaults.standard.data(forKey: "topRecords"),
+           let decoded = try? JSONDecoder().decode([Record].self, from: data) {
+            self.topRecords = decoded
         } else {
-            self.topPlayers = [Player(name: "aaa", steps: 20, time: 60),Player(name: "aa", steps: 20, time: 60),Player(name: "", steps: 20, time: 60),Player(name: "", steps: 20, time: 60),Player(name: "", steps: 20, time: 60),Player(name: "", steps: 20, time: 60),Player(name: "", steps: 20, time: 60),Player(name: "", steps: 20, time: 60),Player(name: "", steps: 20, time: 60),Player(name: "", steps: 20, time: 60),Player(name: "", steps: 20, time: 60)]
+            self.topRecords = [Record(),Record(),Record(),Record(),Record(),Record(),Record(),Record(),Record(),Record()]
         }
         if let data = UserDefaults.standard.data(forKey: "levels"),
            let decoded = try? JSONDecoder().decode([Level].self, from: data) {
@@ -81,8 +81,8 @@ class ViewModel : ObservableObject {
         
     }
     
-    init(topPlayers: [Player], vibrationSetting: Bool, levels: [Level], currLevel : Int) {
-        self.topPlayers = topPlayers
+    init(topRecords: [Record], vibrationSetting: Bool, levels: [Level], currLevel : Int) {
+        self.topRecords = topRecords
         self.vibrationSetting = false
         self.levels = levels
         self.currLevel = currLevel
@@ -103,7 +103,26 @@ class ViewModel : ObservableObject {
         if let _ = levels.first {
             levels[0].isOpened = true
         }
-        topPlayers.removeAll()
+        topRecords.removeAll()
         currLevel = 0
+    }
+    func addNewRec(rec: Record) {
+        topRecords.append(rec)
+        topRecords.sort { r1, r2 in
+            if r1.time < r2.time {
+                return true
+            }
+            else if r1.time == r2.time && r1.steps < r2.steps {
+                return true
+            }
+            else { return false }
+        }
+        
+        print(topRecords)
+        while topRecords.count > 10 {
+            topRecords.removeLast()
+        }
+        print(topRecords)
+        
     }
 }
