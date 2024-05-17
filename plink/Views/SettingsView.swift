@@ -46,7 +46,7 @@ struct SettingsView: View {
                 Spacer()
                 Button(action: {isResetAlert = true}, label: {
                     Text("RESET PROGRESS")
-                        .modifier(greenButton())
+                        .modifier(redButton())
                         .padding()
                 })
                 .alert(isPresented: $isResetAlert, content: {
@@ -65,6 +65,7 @@ struct SettingsView: View {
                 }
             }
         }
+        .navigationViewStyle(StackNavigationViewStyle())
         .navigationBarHidden(true)
         
     }

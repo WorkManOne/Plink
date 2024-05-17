@@ -136,7 +136,7 @@ struct GameView: View {
                                 .resizable()
                                 .scaledToFit()
                                 .frame(width: 20, height: 20)
-                            Text("\(game.steps)")
+                            Text("\(completedSteps)")
                         }.scaleEffect(1.5)
                     }
                     .foregroundColor(.white)
@@ -181,25 +181,28 @@ struct GameView: View {
                                                     
                                                 }
                                                 //print(isMoved)
-                                                if isMoved && !isFirstMove {
-                                                    isFirstMove = true
+                                                if isMoved {
+                                                    completedSteps += 1
+                                                    if !isFirstMove {
+                                                        isFirstMove = true
+                                                    }
+                                                    if model.vibrationSetting {
+                                                        UIImpactFeedbackGenerator(style: .light).impactOccurred()
+                                                    }
+                                                    if !isTimerRunning {
+                                                        startTime = Date()
+                                                        isTimerRunning = true
+                                                    }
                                                 }
-                                                if isMoved && model.vibrationSetting {
-                                                    UIImpactFeedbackGenerator(style: .light).impactOccurred()
-                                                }
-                                                if (!isTimerRunning && isMoved) {
-                                                    startTime = Date()
-                                                    isTimerRunning = true
-                                                }
+                                                
                                                 if (game.isDone) {
                                                     if (elapsedTime < model.levels[currLevel].timeRecord) {
                                                         model.levels[currLevel].timeRecord = elapsedTime
-                                                        model.levels[currLevel].steps = game.steps
+                                                        model.levels[currLevel].steps = completedSteps
                                                         isNewRecord = true
                                                     }
-                                                    completedSteps = game.steps
                                                     model.unlockNext(prev: currLevel)
-                                                    model.addNewRec(rec: Record(steps: game.steps, time: elapsedTime))
+                                                    model.addNewRec(rec: Record(steps: completedSteps, time: elapsedTime))
                                                     isTimerRunning = false
                                                     isGameCompleted = true
                                                 }
@@ -236,7 +239,8 @@ struct GameView: View {
                 }
             }
         }
-            .navigationBarHidden(true)
+        .navigationViewStyle(StackNavigationViewStyle())
+        .navigationBarHidden(true)
     }
 }
 

@@ -76,6 +76,7 @@ struct HighScoreView: View {
                 }
             }
         }
+        .navigationViewStyle(StackNavigationViewStyle())
         .navigationBarHidden(true)
         
     }

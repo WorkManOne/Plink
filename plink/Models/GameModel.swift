@@ -17,12 +17,13 @@ struct Block : Equatable {
 
 class GameModel : ObservableObject {
     @Published var size : Int
-    @Published var steps : Int
+    //@Published var steps : Int
     @Published var field : [[Block]]
     @Published var isDone : Bool
     private var doneField : [Block]
     init() {
-        self.steps = 0
+        //print("game inits")
+        //self.steps = 0
         self.size = 4
         self.field = []
         self.doneField = []
@@ -87,7 +88,7 @@ class GameModel : ObservableObject {
                 let temp = field[position.0][position.1]
                 field[position.0][position.1] = field[newPosition.0][newPosition.1]
                 field[newPosition.0][newPosition.1] = temp
-                steps += 1
+                //steps += 1
                 checkIsDone()
                 return true
             }

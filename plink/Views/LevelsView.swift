@@ -99,6 +99,7 @@ struct LevelsView: View {
             }
         }
         .navigationBarHidden(true)
+        .navigationViewStyle(StackNavigationViewStyle())
         .alert(isPresented: $showWarningLocked, content: {
             Alert(title: Text("Заблокировано"), message: Text("Пройдите предыдущие уровни"), dismissButton: .default(Text("ОК")))
         })
@@ -108,6 +109,6 @@ struct LevelsView: View {
 }
 
 #Preview {
-    //LevelsView(model: ViewModel())
-    ContentView()
+    LevelsView(model: ViewModel())
+    //ContentView()
 }
