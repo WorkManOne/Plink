@@ -7,11 +7,11 @@
 
 import SwiftUI
 
-struct LockedLevelView: View {
-    var body: some View {
-        Text("Пройдите предыдущие уровни")
-    }
-}
+//struct LockedLevelView: View {
+//    var body: some View {
+//        Text("Пройдите предыдущие уровни")
+//    }
+//}
 
 struct LevelsView: View {
     @ObservedObject var model : ViewModel
@@ -85,23 +85,18 @@ struct LevelsView: View {
                 }
                 .padding()
             }
-            .background(
-                Image("bg")
-                    .resizable()
-                    .scaledToFill()
-                    .ignoresSafeArea()
-                    .offset(x: -742,y: 0)
-            )
+            .background(CustomBackgroundPhoto())
             .onAppear() {
                 if model.vibrationSetting {
                     UIImpactFeedbackGenerator(style: .light).impactOccurred()
                 }
             }
+            .navigationBarHidden(true)
         }
         .navigationBarHidden(true)
         .navigationViewStyle(StackNavigationViewStyle())
         .alert(isPresented: $showWarningLocked, content: {
-            Alert(title: Text("Заблокировано"), message: Text("Пройдите предыдущие уровни"), dismissButton: .default(Text("ОК")))
+            Alert(title: Text("Locked"), message: Text("Complete previous levels"), dismissButton: .default(Text("ОК")))
         })
         
         

@@ -64,6 +64,7 @@ struct SettingsView: View {
                     UIImpactFeedbackGenerator(style: .light).impactOccurred()
                 }
             }
+            .navigationBarHidden(true)
         }
         .navigationViewStyle(StackNavigationViewStyle())
         .navigationBarHidden(true)

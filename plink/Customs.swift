@@ -9,23 +9,46 @@ import SwiftUI
 
 struct CustomBackground: View {
     var body : some View {
-        //ScrollView (showsIndicators: false){
-            VStack {
-                HStack {Spacer()}
-                Circle()
-                    .foregroundColor(.blue)
-                    .blur(radius: 130)
-                    .offset(x:-150)
-                Circle()
-                    .foregroundColor(.purple)
-                    .blur(radius: 130)
-                    .offset(x:150)
-            }
-        //}
+        VStack {
+            HStack {Spacer()}
+            Circle()
+                .foregroundColor(.blue)
+                .blur(radius: 130)
+                .offset(x:-150)
+            Circle()
+                .foregroundColor(.purple)
+                .blur(radius: 130)
+                .offset(x:150)
+        }
         .background(
             Color("bgColor")
                 .frame(maxHeight: .infinity)
                 .ignoresSafeArea(.all)
+        )
+    }
+}
+
+struct CustomBackgroundPhoto: View {
+    var body : some View {
+        VStack {
+            HStack {Spacer()}
+            Circle()
+                .foregroundColor(.blue)
+                .blur(radius: 130)
+                .offset(x:-150)
+                .opacity(0.8)
+            Circle()
+                .foregroundColor(.purple)
+                .blur(radius: 130)
+                .offset(x:150)
+                .opacity(0.8)
+        }
+        .background(
+            Image("bg")
+                .resizable()
+                .scaledToFill()
+                .ignoresSafeArea()
+                .offset(x: -350,y: 0)
         )
     }
 }
@@ -89,5 +112,5 @@ struct ColoredToggleStyle: ToggleStyle {
 }
 
 #Preview {
-    CustomBackground()
+    CustomBackgroundPhoto()
 }

@@ -22,12 +22,13 @@ struct ContentView: View {
                         Image("title")
                             .resizable()
                             .scaledToFit()
-                    }//баг с отображением на ipad
+                    }
                     .padding(.top, 60)
                     ZStack {
                         Image("block")
-                        //.resizable()
-                        //.aspectRatio(contentMode: .fit)
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(height: 100)
                         Text("\(model.currLevel)")
                             .foregroundColor(.white)
                             .font(.custom("Rounded Mplus 1c", size: 24))
@@ -63,21 +64,13 @@ struct ContentView: View {
                     }
                 }
                 .background(
-                    //                Image("bg")
-                    //                    .resizable()
-                    //                    .scaledToFill()
-                    //                    .ignoresSafeArea()
-                    //                    .offset(x: -350,y: 0)
-                    Image("bg")
-                        .resizable()
-                        .scaledToFill()
-                        .ignoresSafeArea()
-                        .frame(width: geometry.size.width, height: geometry.size.height)
-                        .offset(x: -geometry.size.width * 0.9, y: 0)
+                    CustomBackgroundPhoto()
                 )
+                .navigationBarHidden(true)
             }
             .navigationBarHidden(true)
             .navigationViewStyle(StackNavigationViewStyle())
+            
         }
     }
     

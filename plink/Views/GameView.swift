@@ -22,7 +22,7 @@ struct GameView: View {
     @State private var isSwiped = false
     @State private var isNewRecord = false
     @State private var isGameCompleted = false
-    @State private var completedSteps = 0
+    @State private var stepsLeft = 20
     @State private var isFirstMove = false
     
     var backButton : some View {
@@ -59,7 +59,7 @@ struct GameView: View {
                                 .font(.largeTitle)
                                 .padding()
                         }
-                        VStack (spacing: 80){
+                        VStack (spacing: 80) {
                             HStack {
                                 Image("Alarm")
                                     .renderingMode(.template)
@@ -69,15 +69,17 @@ struct GameView: View {
                                 Text(timerString)
                             }
                             .scaleEffect(2.5)
+                            
                             HStack {
                                 Image("Refresh")
                                     .renderingMode(.template)
                                     .resizable()
                                     .scaledToFit()
                                     .frame(width: 20, height: 20)
-                                Text("\(completedSteps)")
+                                Text("\(stepsLeft)")
                             }
                             .scaleEffect(2.5)
+                            
                         }
                         .padding(40)
                         
@@ -130,14 +132,24 @@ struct GameView: View {
                             
                         }.scaleEffect(1.5)
                         Spacer()
-                        HStack {
-                            Image("Refresh")
-                                .renderingMode(.template)
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 20, height: 20)
-                            Text("\(completedSteps)")
-                        }.scaleEffect(1.5)
+                        Button(action: {
+                            if stepsLeft > 0 {
+                                //print("stepBack")
+                                if game.stepBack() {
+                                    stepsLeft -= 1
+                                }
+                                
+                            }
+                        }, label: {
+                            HStack {
+                                Image("Refresh")
+                                    .renderingMode(.template)
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 20, height: 20)
+                                Text("\(stepsLeft)")
+                            }.scaleEffect(1.5)
+                        })
                     }
                     .foregroundColor(.white)
                     .padding(.horizontal, 30)
@@ -182,7 +194,6 @@ struct GameView: View {
                                                 }
                                                 //print(isMoved)
                                                 if isMoved {
-                                                    completedSteps += 1
                                                     if !isFirstMove {
                                                         isFirstMove = true
                                                     }
@@ -198,11 +209,11 @@ struct GameView: View {
                                                 if (game.isDone) {
                                                     if (elapsedTime < model.levels[currLevel].timeRecord) {
                                                         model.levels[currLevel].timeRecord = elapsedTime
-                                                        model.levels[currLevel].steps = completedSteps
+                                                        model.levels[currLevel].steps = stepsLeft
                                                         isNewRecord = true
                                                     }
                                                     model.unlockNext(prev: currLevel)
-                                                    model.addNewRec(rec: Record(steps: completedSteps, time: elapsedTime))
+                                                    model.addNewRec(rec: Record(steps: stepsLeft, time: elapsedTime))
                                                     isTimerRunning = false
                                                     isGameCompleted = true
                                                 }
@@ -237,7 +248,11 @@ struct GameView: View {
                         startTime = Date() - elapsedTime
                         isTimerRunning = true
                 }
+                else {
+                    game.shuffle()
+                }
             }
+            .navigationBarHidden(true)
         }
         .navigationViewStyle(StackNavigationViewStyle())
         .navigationBarHidden(true)

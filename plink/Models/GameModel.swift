@@ -17,13 +17,12 @@ struct Block : Equatable {
 
 class GameModel : ObservableObject {
     @Published var size : Int
-    //@Published var steps : Int
+    @Published var steps : [((Int, Int),(Int, Int))]
     @Published var field : [[Block]]
     @Published var isDone : Bool
     private var doneField : [Block]
     init() {
-        //print("game inits")
-        //self.steps = 0
+        self.steps = []
         self.size = 4
         self.field = []
         self.doneField = []
@@ -88,7 +87,10 @@ class GameModel : ObservableObject {
                 let temp = field[position.0][position.1]
                 field[position.0][position.1] = field[newPosition.0][newPosition.1]
                 field[newPosition.0][newPosition.1] = temp
-                //steps += 1
+                if steps.count > 20 {
+                    steps.removeFirst()
+                }
+                steps.append(((position.0, position.1), (newPosition.0, newPosition.1)))
                 checkIsDone()
                 return true
             }
@@ -96,6 +98,17 @@ class GameModel : ObservableObject {
                 //print("bad")
                 return false
             }
+        }
+        else {
+            return false
+        }
+    }
+    func stepBack() -> Bool {
+        if let (posPrev, posNext) = steps.popLast() {
+            let temp = field[posPrev.0][posPrev.1]
+            field[posPrev.0][posPrev.1] = field[posNext.0][posNext.1]
+            field[posNext.0][posNext.1] = temp
+            return true
         }
         else {
             return false
