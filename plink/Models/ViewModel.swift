@@ -112,7 +112,7 @@ class ViewModel : ObservableObject {
             if r1.time < r2.time {
                 return true
             }
-            else if r1.time == r2.time && r1.steps < r2.steps {
+            else if r1.time == r2.time && r1.steps > r2.steps {
                 return true
             }
             else { return false }
